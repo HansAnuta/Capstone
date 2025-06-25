@@ -33,6 +33,7 @@
                 <form action="login.php" method="POST">
                     <input type="text" name="username" placeholder="USERNAME" class="input-field" required>
                     <input type="password" name="password" placeholder="PASSWORD" class="input-field" required>
+                    <a href="">Forgot password?</a>
                     <div class="error-message">
                         <?php
                             if (isset($_GET['error']) && $_GET['error'] == 'invalid_credentials') {

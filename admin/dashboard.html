@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Judging System Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f9fafb;
+            min-height: 100vh;
+            padding: 24px;
+        }
+
+        .container {
+            max-width: 1024px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background-color: #fbbf24;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1f2937;
+        }
+
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .tab {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab.active {
+            background-color: #f97316;
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .tab:not(.active) {
+            background-color: #fed7aa;
+            color: #374151;
+        }
+
+        .tab:not(.active):hover {
+            background-color: #fb923c;
+        }
+
+        .content {
+            background-color: white;
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .filter-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 16px;
+        }
+
+        .filter-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background-color: #f3f4f6;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .filter-btn:hover {
+            background-color: #e5e7eb;
+        }
+
+        .item-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .item {
+            background-color: #bbf7d0;
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+        }
+
+        .item-title {
+            font-weight: bold;
+            color: #1f2937;
+        }
+
+        .item-subtitle {
+            font-size: 14px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            padding: 8px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-edit {
+            background-color: #10b981;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background-color: #059669;
+        }
+
+        .btn-delete {
+            background-color: #ef4444;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background-color: #dc2626;
+        }
+
+        .btn-share {
+            background-color: #3b82f6;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .btn-share:hover {
+            background-color: #2563eb;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .grid-5 {
+            display: grid;
+            grid-template-columns: auto 1fr 1fr auto auto;
+            align-items: center;
+            gap: 16px;
+            font-size: 14px;
+        }
+
+        .contest-header {
+            background-color: #bbf7d0;
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .result-item {
+            background-color: #dcfce7;
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        .view-score {
+            color: #3b82f6;
+            text-decoration: none;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .view-score:hover {
+            color: #1d4ed8;
+        }
+
+        .fab {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 56px;
+            height: 56px;
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.2s;
+        }
+
+        .fab:hover {
+            background-color: #2563eb;
+        }
+
+        @media (max-width: 768px) {
+            .grid-3, .grid-5 {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+            
+            .item-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>DIGITAL JUDGING SYSTEM</h1>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="tabs">
+            <button class="tab active" data-tab="events">EVENTS</button>
+            <button class="tab" data-tab="judges">JUDGES</button>
+            <button class="tab" data-tab="participants">PARTICIPANTS</button>
+            <button class="tab" data-tab="results">RESULTS</button>
+        </div>
+
+        <!-- Content Area -->
+        <div class="content">
+            <!-- Events Tab -->
+            <div class="tab-content active" id="events">
+                <div class="item-list" id="events-list"></div>
+            </div>
+
+            <!-- Judges Tab -->
+            <div class="tab-content" id="judges">
+                <div class="filter-container">
+                    <button class="filter-btn">
+                        <span>🔍</span>
+                        Filter
+                    </button>
+                </div>
+                <div class="item-list" id="judges-list"></div>
+            </div>
+
+            <!-- Participants Tab -->
+            <div class="tab-content" id="participants">
+                <div class="filter-container">
+                    <button class="filter-btn">
+                        <span>🔍</span>
+                        Filter
+                    </button>
+                </div>
+                <div class="item-list" id="participants-list"></div>
+            </div>
+
+            <!-- Results Tab -->
+            <div class="tab-content" id="results">
+                <div id="results-list"></div>
+            </div>
+        </div>
+
+        <!-- Floating Action Button -->
+        <button class="fab">+</button>
+    </div>
+
+    <script>
+        // Sample data - replace with database calls
+        const data = {
+            events: [
+                { id: 1, name: 'EVENT 1', created: 'October 5, 2025 - 11:00 am', status: 'active' },
+                { id: 2, name: 'EVENT 2', created: 'October 5, 2025 - 11:00 am', status: 'active' },
+                { id: 3, name: 'EVENT 3', created: 'October 5, 2025 - 11:00 am', status: 'active' },
+            ],
+            judges: [
+                { id: 1, name: 'Judge Smith', contestAssigned: 'Photography Contest', inviteLink: 'https://invite.link/1' },
+                { id: 2, name: 'Judge Johnson', contestAssigned: 'Art Contest', inviteLink: 'https://invite.link/2' },
+                { id: 3, name: 'Judge Williams', contestAssigned: 'Music Contest', inviteLink: 'https://invite.link/3' },
+            ],
+            participants: [
+                { id: 1, name: 'Alice Johnson', contestAssigned: 'Photography Contest', teamName: 'Team Alpha' },
+                { id: 2, name: 'Bob Smith', contestAssigned: 'Art Contest', teamName: 'Team Beta' },
+                { id: 3, name: 'Carol Davis', contestAssigned: 'Music Contest', teamName: 'Team Gamma' },
+            ],
+            results: [
+                {
+                    id: 1,
+                    contestName: 'Photography Contest',
+                    participants: [
+                        { rank: 1, name: 'Alice Johnson', team: 'Team Alpha', score: 95 },
+                        { rank: 2, name: 'Bob Smith', team: 'Team Beta', score: 88 },
+                        { rank: 3, name: 'Carol Davis', team: 'Team Gamma', score: 82 },
+                        { rank: 4, name: 'David Wilson', team: 'Team Delta', score: 78 },
+                        { rank: 5, name: 'Eva Brown', team: 'Team Epsilon', score: 75 },
+                    ]
+                }
+            ]
+        };
+
+        // Tab switching functionality
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs and content
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                tab.classList.add('active');
+                
+                // Show corresponding content
+                const tabId = tab.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // Render functions
+        function renderEvents() {
+            const container = document.getElementById('events-list');
+            container.innerHTML = '';
+            
+            data.events.forEach(event => {
+                const eventEl = document.createElement('div');
+                eventEl.className = 'item';
+                eventEl.innerHTML = `
+                    <div class="item-header">
+                        <div>
+                            <div class="item-title">${event.name}</div>
+                            <div class="item-subtitle">Created ${event.created}</div>
+                        </div>
+                        <div class="item-actions">
+                            <button class="btn btn-edit" onclick="handleEdit(${event.id}, 'event')">✏️</button>
+                            <button class="btn btn-delete" onclick="handleDelete(${event.id}, 'event')">🗑️</button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(eventEl);
+            });
+        }
+
+        function renderJudges() {
+            const container = document.getElementById('judges-list');
+            container.innerHTML = '';
+            
+            data.judges.forEach(judge => {
+                const judgeEl = document.createElement('div');
+                judgeEl.className = 'item';
+                judgeEl.innerHTML = `
+                    <div class="grid-3">
+                        <div class="item-title">${judge.name}</div>
+                        <div>${judge.contestAssigned}</div>
+                        <div style="text-align: right;">
+                            <button class="btn-share" onclick="handleShare('${judge.inviteLink}')">
+                                🔗 Invite Link
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(judgeEl);
+            });
+        }
+
+        function renderParticipants() {
+            const container = document.getElementById('participants-list');
+            container.innerHTML = '';
+            
+            data.participants.forEach(participant => {
+                const participantEl = document.createElement('div');
+                participantEl.className = 'item';
+                participantEl.innerHTML = `
+                    <div class="grid-3">
+                        <div class="item-title">${participant.name}</div>
+                        <div>${participant.contestAssigned}</div>
+                        <div>${participant.teamName}</div>
+                    </div>
+                `;
+                container.appendChild(participantEl);
+            });
+        }
+
+        function renderResults() {
+            const container = document.getElementById('results-list');
+            container.innerHTML = '';
+            
+            data.results.forEach(contest => {
+                const contestEl = document.createElement('div');
+                contestEl.style.marginBottom = '24px';
+                
+                const header = document.createElement('div');
+                header.className = 'contest-header';
+                header.innerHTML = `<div class="item-title">${contest.contestName}</div>`;
+                contestEl.appendChild(header);
+                
+                const participantsList = document.createElement('div');
+                participantsList.style.display = 'flex';
+                participantsList.style.flexDirection = 'column';
+                participantsList.style.gap = '8px';
+                
+                contest.participants.forEach(participant => {
+                    const participantEl = document.createElement('div');
+                    participantEl.className = 'result-item';
+                    participantEl.innerHTML = `
+                        <div class="grid-5">
+                            <div><strong>Rank ${participant.rank}</strong></div>
+                            <div>${participant.name}</div>
+                            <div>${participant.team}</div>
+                            <div>Score: ${participant.score}</div>
+                            <div>
+                                <a href="#" class="view-score" onclick="handleViewScore(${participant.rank})">
+                                    👁️ View detailed score
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                    participantsList.appendChild(participantEl);
+                });
+                
+                contestEl.appendChild(participantsList);
+                container.appendChild(contestEl);
+            });
+        }
+
+        // Event handlers
+        function handleEdit(id, type) {
+            console.log(`Editing ${type} with id:`, id);
+            alert(`Edit ${type} with ID: ${id}`);
+        }
+
+        function handleDelete(id, type) {
+            console.log(`Deleting ${type} with id:`, id);
+            if (confirm(`Are you sure you want to delete this ${type}?`)) {
+                // Implement delete logic here
+                alert(`Deleted ${type} with ID: ${id}`);
+            }
+        }
+
+        function handleShare(link) {
+            navigator.clipboard.writeText(link).then(() => {
+                alert('Invite link copied to clipboard!');
+            }).catch(() => {
+                alert(`Invite link: ${link}`);
+            });
+        }
+
+        function handleViewScore(participantId) {
+            console.log('Viewing detailed score for participant:', participantId);
+            alert(`Viewing detailed score for participant rank: ${participantId}`);
+        }
+
+        // Database integration functions
+        async function fetchFromDatabase(endpoint) {
+            try {
+                // Replace with your actual database API calls
+                // const response = await fetch(`/api/${endpoint}`);
+                // const data = await response.json();
+                // return data;
+                
+                // For now, return sample data
+                return data[endpoint];
+            } catch (error) {
+                console.error('Database fetch error:', error);
+                return [];
+            }
+        }
+
+        async function saveToDatabase(endpoint, data) {
+            try {
+                // Replace with your actual database API calls
+                // const response = await fetch(`/api/${endpoint}`, {
+                //     method: 'POST',
+                //     headers: { 'Content-Type': 'application/json' },
+                //     body: JSON.stringify(data)
+                // });
+                // return await response.json();
+                
+                console.log(`Saving to ${endpoint}:`, data);
+                return { success: true };
+            } catch (error) {
+                console.error('Database save error:', error);
+                return { success: false, error };
+            }
+        }
+
+        // Initialize the dashboard
+        function init() {
+            renderEvents();
+            renderJudges();
+            renderParticipants();
+            renderResults();
+        }
+
+        // Load data when page loads
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
