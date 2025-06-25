@@ -1,0 +1,262 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #ff6b35 0%, #ff8e53 30%, #ffa366 60%, #ffb366 100%);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.container {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 50px;
+    z-index: 2;
+}
+
+.left-section {
+    flex: 1;
+    max-width: 500px;
+}
+
+.title {
+    font-size: 3.5rem;
+    font-weight: bold;
+    color: #2c2c2c;
+    margin-bottom: 50px;
+    line-height: 1.2;
+}
+
+.podium-container {
+    display: flex;
+    align-items: end;
+    justify-content: center;
+    margin-bottom: 30px;
+    gap: 5px;
+}
+
+.podium-step {
+    border: 4px solid #2c2c2c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+.podium-step:hover {
+    transform: scale(1.05);
+}
+
+.step-2 {
+    width: 100px;
+    height: 140px;
+    background: linear-gradient(135deg, #f4d03f, #f7dc6f);
+}
+
+.step-1 {
+    width: 120px;
+    height: 180px;
+    background: linear-gradient(135deg, #ff69b4, #ff8fbc);
+}
+
+.step-3 {
+    width: 100px;
+    height: 120px;
+    background: linear-gradient(135deg, #ff7f50, #ff9470);
+}
+
+.step-number {
+    width: 40px;
+    height: 40px;
+    background: white;
+    border: 3px solid #2c2c2c;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #2c2c2c;
+}
+
+.right-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    max-width: 300px;
+}
+
+.cta-text {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #2c2c2c;
+    margin-bottom: 30px;
+    text-align: right;
+}
+
+.button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 200px;
+}
+
+.btn {
+    padding: 15px 30px;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-login {
+    background: linear-gradient(135deg, #ffd700, #ffed4e);
+    color: #2c2c2c;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.btn-signup {
+    background: linear-gradient(135deg, #ffb347, #ffc470);
+    color: #2c2c2c;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+}
+
+.decorative-shape {
+    position: absolute;
+    right: -10%;
+    top: 10%;
+    width: 60%;
+    height: 80%;
+    background: linear-gradient(45deg, #ff4500, #ff6347);
+    border-radius: 50% 10% 50% 10%;
+    z-index: 1;
+    opacity: 0.8;
+}
+
+.footer {
+
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #2c2c2c;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        padding: 20px;
+        justify-content: flex-start;
+        padding-top: 60px;
+    }
+
+    .content {
+        flex-direction: column;
+        text-align: center;
+        padding: 0 20px;
+        gap: 40px;
+    }
+
+    .left-section {
+        max-width: 100%;
+        order: 1;
+    }
+
+    .title {
+        font-size: 2.5rem;
+        margin-bottom: 30px;
+    }
+
+    .podium-container {
+        margin-bottom: 40px;
+        scale: 0.8;
+    }
+
+    .right-section {
+        max-width: 100%;
+        align-items: center;
+        order: 2;
+    }
+
+    .cta-text {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .button-group {
+        width: 250px;
+    }
+
+    .decorative-shape {
+        position: fixed;
+        right: -20%;
+        bottom: 0;
+        top: auto;
+        width: 80%;
+        height: 50%;
+        border-radius: 50% 50% 0 0;
+        z-index: -1;
+    }
+
+    .footer {
+        position: relative;
+        width: 100%;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.title, .podium-container, .cta-text, .button-group {
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.podium-container {
+    animation-delay: 0.2s;
+}
+
+.cta-text {
+    animation-delay: 0.4s;
+}
+
+.button-group {
+    animation-delay: 0.6s;
+}

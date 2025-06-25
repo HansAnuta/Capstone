@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Judging System</title>
+    <link rel="stylesheet" href="index-style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="decorative-shape"></div>
+        
+        <div class="content">
+            <div class="left-section">
+                <h1 class="title">Digital Judging System</h1>
+                
+                <div class="podium-container">
+                    <div class="podium-step step-2">
+                        <div class="step-number">2</div>
+                    </div>
+                    <div class="podium-step step-1">
+                        <div class="step-number">1</div>
+                    </div>
+                    <div class="podium-step step-3">
+                        <div class="step-number">3</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-section">
+                <div class="cta-text">LET'S GET STARTED</div>
+                
+                <div class="button-group">
+                    <button class="btn btn-login" onclick="window.location.href='login.php'">LOGIN</button>
+                    <button class="btn btn-signup" onclick="window.location.href='signup.php'">SIGNUP</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>A Capstone Project of</p><br>
+        <p>Hans Matthew L. Anuta</p><br>
+        <p>Kezia G. C</p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const podiumSteps = document.querySelectorAll('.podium-step');
+            
+            podiumSteps.forEach(step => {
+                step.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.05) rotate(2deg)';
+                });
+                
+                step.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1) rotate(0deg)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
